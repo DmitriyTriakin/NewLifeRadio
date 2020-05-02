@@ -1,0 +1,71 @@
+package com.newliferadio.ui;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+
+import com.newliferadio.R;
+
+/**
+ * Created by artemkutukov on 25.10.16.
+ */
+
+public class WebActivity extends AppCompatActivity {
+
+    private WebView webView;
+    private Toolbar mToolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.web_activity);
+
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient() {
+
+            public void onProgressChanged(WebView view, int progress) {
+                progressBar.setVisibility(View.VISIBLE);
+                if (progress == 100)
+                    progressBar.setVisibility(View.GONE);
+            }
+        });
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return false;
+            }
+        });
+        webView.loadUrl(PlayerActivity.WEB_LINK);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.hold, R.anim.fade_in);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            finish();
+            overridePendingTransition(R.anim.hold, R.anim.fade_in);
+        }
+    }
+}
