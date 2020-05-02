@@ -2,12 +2,15 @@ package com.newliferadio.ui;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -64,10 +67,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
         }
     };
 
+    private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            stop();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        registerReceiver(mNoisyReceiver, filter);
+
 
         btnPlay = findViewById(R.id.play);
         btnStop = findViewById(R.id.stop);
@@ -170,6 +184,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
             mPlayerService.stopForeground();
         }
         unbindService(myConnection);
+        unregisterReceiver(mNoisyReceiver);
     }
 
     @UiThread
