@@ -99,7 +99,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
             @Override
             public void onClick(View v) {
                 try {
-                    Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("viber://add?number=79112413777"));
+                    Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBsrLk1Z4WkEEp7sFHZUdDvt6juSbo1MYJsysnRsNzc%2Byk6bYr4pn3U4gwOYIbg"));
                     startActivity(email);
                 } catch (Exception e) {
                     e.printStackTrace();
