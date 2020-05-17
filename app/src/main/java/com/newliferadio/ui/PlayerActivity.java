@@ -14,15 +14,16 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.newliferadio.PlayerService;
 import com.newliferadio.R;
@@ -81,7 +82,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
 
         IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         registerReceiver(mNoisyReceiver, filter);
-
 
         btnPlay = findViewById(R.id.play);
         btnStop = findViewById(R.id.stop);

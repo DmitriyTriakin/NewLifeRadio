@@ -11,30 +11,24 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.newliferadio.ui.ApiService;
@@ -204,20 +198,20 @@ public class PlayerService extends Service implements Player.EventListener {
 
     private void prepareExoPlayerFromURL() {
         if (exoPlayer == null) {
-            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-            TrackSelection.Factory trackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-            DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                    Util.getUserAgent(this, getString(R.string.app_name)), defaultBandwidthMeter);
-            trackSelector = new DefaultTrackSelector(trackSelectionFactory);
+            mediaSource = buildMediaSource(Uri.parse(STREAM_URL));
+            trackSelector = new DefaultTrackSelector(this);
 
-            mediaSource = new ExtractorMediaSource(Uri.parse(STREAM_URL), dataSourceFactory, extractorsFactory, null, null);
+            exoPlayer = new SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build();
+            exoPlayer.addListener(this);
+
+            exoPlayer.prepare(mediaSource);
         }
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-        exoPlayer.addListener(this);
+    }
 
-        exoPlayer.prepare(mediaSource);
+    private MediaSource buildMediaSource(Uri uri) {
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+                Util.getUserAgent(this, getString(R.string.app_name)));
+        return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
     }
 
     private void notification(String title) {

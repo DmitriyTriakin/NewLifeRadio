@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.newliferadio"
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 29
         versionCode 16
         versionName "3.6"
     }
@@ -16,13 +16,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.google.android.exoplayer:exoplayer:2.7.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.4'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
 
 }
 

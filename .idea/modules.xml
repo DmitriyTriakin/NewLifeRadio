@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NewLifeRadio(NEW).iml" filepath="$PROJECT_DIR$/NewLifeRadio(NEW).iml" />
-      <module fileurl="file://$PROJECT_DIR$/NewLifeRadio-master.iml" filepath="$PROJECT_DIR$/NewLifeRadio-master.iml" group="NewLifeRadio-master" />
-      <module fileurl="file://$PROJECT_DIR$/app/NewLifeRadio-master-app.iml" filepath="$PROJECT_DIR$/app/NewLifeRadio-master-app.iml" group="NewLifeRadio-master/app" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NewLifeRadio.iml" filepath="$PROJECT_DIR$/NewLifeRadio.iml" group="NewLifeRadio" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="NewLifeRadio/app" />
     </modules>
   </component>
 </project>
