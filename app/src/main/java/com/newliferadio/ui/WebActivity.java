@@ -26,15 +26,16 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.web_activity);
 
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        webView = (WebView) findViewById(R.id.webView);
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
+        webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {
 
             public void onProgressChanged(WebView view, int progress) {
                 progressBar.setVisibility(View.VISIBLE);
-                if (progress == 100)
+                if (progress == 100) {
                     progressBar.setVisibility(View.GONE);
+                }
             }
         });
         webView.setWebViewClient(new WebViewClient() {
@@ -46,17 +47,14 @@ public class WebActivity extends AppCompatActivity {
         });
         webView.loadUrl(PlayerActivity.WEB_LINK);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.hold, R.anim.fade_in);
-            }
+        mToolbar.setNavigationOnClickListener(view -> {
+            finish();
+            overridePendingTransition(R.anim.hold, R.anim.fade_in);
         });
     }
 

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -51,13 +50,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
 
             if (ContextCompat.checkSelfPermission(PlayerActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(PlayerActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSION_READ_STATE);
-            } else {
-                if (mPlayerService != null) {
-                    mPlayerService.attachPhoneListener();
-                }
+            } else if (mPlayerService != null) {
+                mPlayerService.attachPhoneListener();
             }
 
-            if (mPlayerService.isRadioPlaying()) {
+            if (mPlayerService != null && mPlayerService.isRadioPlaying()) {
                 onPlayService();
                 metaTitle.setText(mPlayerService.getTitleInApp());
             }
@@ -87,81 +84,54 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
         btnStop = findViewById(R.id.stop);
         metaTitle = findViewById(R.id.title);
 
-        findViewById(R.id.web).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PlayerActivity.this, WebActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_out, R.anim.hold);
-            }
+        findViewById(R.id.web).setOnClickListener(v -> {
+            Intent intent = new Intent(PlayerActivity.this, WebActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_out, R.anim.hold);
         });
-        findViewById(R.id.viber).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBsrLk1Z4WkEEp7sFHZUdDvt6juSbo1MYJsysnRsNzc%2Byk6bYr4pn3U4gwOYIbg"));
-                    startActivity(email);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(PlayerActivity.this, "Приложение Viber не установлено!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        findViewById(R.id.telegram).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/joinchat/JmXPcVayF2lJce00SNP9qg"));
+        findViewById(R.id.viber).setOnClickListener(v -> {
+            try {
+                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBsrLk1Z4WkEEp7sFHZUdDvt6juSbo1MYJsysnRsNzc%2Byk6bYr4pn3U4gwOYIbg"));
                 startActivity(email);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(PlayerActivity.this, "Приложение Viber не установлено!", Toast.LENGTH_SHORT).show();
             }
         });
-        findViewById(R.id.whatsapp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    PackageManager pm = getPackageManager();
-                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("https://api.whatsapp.com/send?phone=+79112413777"));
-                    startActivity(i);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(PlayerActivity.this, "Приложение WhatsApp не установлено!", Toast.LENGTH_SHORT).show();
-                }
+        findViewById(R.id.telegram).setOnClickListener(v -> {
+            Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/joinchat/JmXPcVayF2lJce00SNP9qg"));
+            startActivity(email);
+        });
+        findViewById(R.id.whatsapp).setOnClickListener(v -> {
+            try {
+                PackageManager pm = getPackageManager();
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://api.whatsapp.com/send?phone=+79112413777"));
+                startActivity(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(PlayerActivity.this, "Приложение WhatsApp не установлено!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        findViewById(R.id.email).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + MAIL));
-                startActivity(email);
-            }
+        findViewById(R.id.email).setOnClickListener(v -> {
+            Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + MAIL));
+            startActivity(email);
         });
 
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                start();
-            }
-        });
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stop();
-            }
-        });
+        btnPlay.setOnClickListener(v -> start());
+        btnStop.setOnClickListener(v -> stop());
 
         bindService(new Intent(this, PlayerService.class), myConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_READ_STATE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (mPlayerService != null) {
-                        mPlayerService.attachPhoneListener();
-                    }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_READ_STATE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (mPlayerService != null) {
+                    mPlayerService.attachPhoneListener();
                 }
             }
         }
@@ -235,23 +205,14 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
         new AlertDialog.Builder(PlayerActivity.this)
                 .setTitle("Ошибка")
                 .setMessage(error)
-                .setPositiveButton("Настройки",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent();
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setAction(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-                                startActivity(intent);
-                            }
-                        }
-                )
-                .setNegativeButton("Закрыть",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        }
-                )
+                .setPositiveButton("Настройки", (dialog, id) -> {
+                    Intent intent = new Intent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setAction(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Закрыть", (dialog, id) -> dialog.cancel())
                 .show();
     }
+
 }

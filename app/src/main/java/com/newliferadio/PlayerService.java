@@ -1,5 +1,6 @@
 package com.newliferadio;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,7 +22,6 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -42,9 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PlayerService extends Service implements Player.EventListener {
-
-    public static final String START_FOREGROUND_ACTION = "START_FOREGROUND_ACTION";
-    public static final String STOP_FOREGROUND_ACTION = "STOP_FOREGROUND_ACTION";
 
     private static final String CMD_NAME = "command";
     private static final String CMD_STOP = "pause";
@@ -107,10 +104,6 @@ public class PlayerService extends Service implements Player.EventListener {
                     }
                     break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    if (isRadioPlaying()) {
-                        stop(true);
-                    }
-                    break;
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     if (isRadioPlaying()) {
                         stop(true);
@@ -156,7 +149,7 @@ public class PlayerService extends Service implements Player.EventListener {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Вера, надежда, любовь");
 
-        android.app.Notification n = builder.build();
+        Notification n = builder.build();
 
         startForeground(NOTIFY_ID, n);
     }
@@ -193,17 +186,19 @@ public class PlayerService extends Service implements Player.EventListener {
 
     public void attachPhoneListener() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        telephonyManager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+        if (telephonyManager != null) {
+            telephonyManager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
     }
 
     private void prepareExoPlayerFromURL() {
         if (exoPlayer == null) {
-            mediaSource = buildMediaSource(Uri.parse(STREAM_URL));
             trackSelector = new DefaultTrackSelector(this);
 
             exoPlayer = new SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build();
             exoPlayer.addListener(this);
 
+            mediaSource = buildMediaSource(Uri.parse(STREAM_URL));
             exoPlayer.prepare(mediaSource);
         }
     }
@@ -227,14 +222,9 @@ public class PlayerService extends Service implements Player.EventListener {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("В эфире: " + title);
 
-        android.app.Notification n = builder.build();
+        Notification n = builder.build();
 
         mNotificationManager.notify(NOTIFY_ID, n);
-    }
-
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
     }
 
     @Override
@@ -257,10 +247,8 @@ public class PlayerService extends Service implements Player.EventListener {
             if (playbackState == Player.STATE_READY) {
                 updateSubtitle();
             }
-        } else {
-            if (mOnPlayerUpdate != null) {
-                mOnPlayerUpdate.onStopService();
-            }
+        } else if (mOnPlayerUpdate != null) {
+            mOnPlayerUpdate.onStopService();
         }
     }
 
@@ -297,12 +285,7 @@ public class PlayerService extends Service implements Player.EventListener {
 
     }
 
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            updateSubtitle();
-        }
-    };
+    private Runnable mRunnable = this::updateSubtitle;
 
     private void updateSubtitle() {
         apiService.getService().getTrackName().enqueue(new Callback<ResponseBody>() {
@@ -310,7 +293,7 @@ public class PlayerService extends Service implements Player.EventListener {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     try {
-                        String content = response.body().string();
+                        String content = response.body() != null ? response.body().string() : "";
                         if (!content.equals(mTitleInApp)) {
                             mTitleInApp = content;
                             if (mOnPlayerUpdate != null) {
@@ -329,7 +312,6 @@ public class PlayerService extends Service implements Player.EventListener {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
-
             }
         });
     }
@@ -338,11 +320,11 @@ public class PlayerService extends Service implements Player.EventListener {
         if (!mAudioFocusGranted) {
             AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             // Request audio focus for play back
-            int result = am.requestAudioFocus(mOnAudioFocusChangeListener,
+            int result = am != null ? am.requestAudioFocus(mOnAudioFocusChangeListener,
                     // Use the music stream.
                     AudioManager.STREAM_MUSIC,
                     // Request permanent focus.
-                    AudioManager.AUDIOFOCUS_GAIN);
+                    AudioManager.AUDIOFOCUS_GAIN) : 0;
 
             mAudioFocusGranted = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
         }
@@ -351,7 +333,7 @@ public class PlayerService extends Service implements Player.EventListener {
 
     private void forceMusicStop() {
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        if (am.isMusicActive()) {
+        if (am != null && am.isMusicActive()) {
             Intent intentToStop = new Intent(SERVICE_CMD);
             intentToStop.putExtra(CMD_NAME, CMD_STOP);
             sendBroadcast(intentToStop);
