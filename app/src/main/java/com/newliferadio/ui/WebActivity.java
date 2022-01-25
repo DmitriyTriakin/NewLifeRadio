@@ -12,10 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.newliferadio.R;
 
-/**
- * Created by artemkutukov on 25.10.16.
- */
-
 public class WebActivity extends AppCompatActivity {
 
     private WebView webView;

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
@@ -18,7 +17,7 @@ import android.telephony.TelephonyManager;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -32,7 +31,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.newliferadio.ui.ApiService;
-import com.newliferadio.ui.NotificationHelperActivity;
+import com.newliferadio.ui.NotificationActivity;
 
 import java.io.IOException;
 
@@ -137,7 +136,7 @@ public class PlayerService extends Service implements Player.EventListener {
     }
 
     public void startForeground() {
-        Intent notificationIntent = new Intent(this, NotificationHelperActivity.class);
+        Intent notificationIntent = new Intent(this, NotificationActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notification");
@@ -210,7 +209,7 @@ public class PlayerService extends Service implements Player.EventListener {
     }
 
     private void notification(String title) {
-        Intent notificationIntent = new Intent(this, NotificationHelperActivity.class);
+        Intent notificationIntent = new Intent(this, NotificationActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notification");
@@ -263,7 +262,7 @@ public class PlayerService extends Service implements Player.EventListener {
     }
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {
+    public void onPlayerError(PlaybackException error) {
         if (mOnPlayerUpdate != null) {
             mOnPlayerUpdate.onErrorService(error.getMessage());
         }
@@ -349,16 +348,10 @@ public class PlayerService extends Service implements Player.EventListener {
         return START_NOT_STICKY;
     }
 
-    public class PlayerBinder extends Binder {
-        public PlayerService getService() {
-            return PlayerService.this;
-        }
-    }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return new PlayerBinder();
+        return new PlayerBinder(this);
     }
 
     @Override
@@ -374,13 +367,4 @@ public class PlayerService extends Service implements Player.EventListener {
         stop(false);
     }
 
-    public interface OnPlayerUpdate {
-        void onPlayService();
-
-        void onTitleService(String content);
-
-        void onStopService();
-
-        void onErrorService(String error);
-    }
 }

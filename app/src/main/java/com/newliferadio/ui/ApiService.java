@@ -1,26 +1,20 @@
 package com.newliferadio.ui;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.http.GET;
 
 public class ApiService {
 
-    private Retrofit adapter;
+    private Retrofit retrofit;
+    private final String API_URL = "http://nlradio.stream/";
 
     public ApiService() {
-        Retrofit.Builder builder = new Retrofit.Builder();
-        adapter = builder.baseUrl("https://nlradio.stream/").build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .build();
     }
 
     public Service getService() {
-        return adapter.create(Service.class);
+        return retrofit.create(Service.class);
     }
 
-    public interface Service {
-
-        @GET("status-cp-json.xsl")
-        Call<ResponseBody> getTrackName();
-    }
 }

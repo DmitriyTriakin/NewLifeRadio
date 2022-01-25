@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.NotificationHelperActivity" />
+        <activity android:name=".ui.NotificationActivity" />
         <activity
             android:name=".ui.WebActivity"
             android:theme="@style/Theme.app.Translucent" />

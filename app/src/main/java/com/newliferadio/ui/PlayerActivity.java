@@ -24,10 +24,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.newliferadio.OnPlayerUpdate;
+import com.newliferadio.PlayerBinder;
 import com.newliferadio.PlayerService;
 import com.newliferadio.R;
 
-public class PlayerActivity extends AppCompatActivity implements PlayerService.OnPlayerUpdate {
+public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate {
 
     private static final int PERMISSION_READ_STATE = 89;
     public final static String WEB_LINK = "http://nlradio.net";
@@ -44,7 +46,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
     private ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
-            PlayerService.PlayerBinder binder = (PlayerService.PlayerBinder) service;
+            PlayerBinder binder = (PlayerBinder) service;
             mPlayerService = binder.getService();
             mPlayerService.setOnPlayerUpdate(PlayerActivity.this);
 
@@ -91,7 +93,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerService.O
         });
         findViewById(R.id.viber).setOnClickListener(v -> {
             try {
-                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBsrLk1Z4WkEEp7sFHZUdDvt6juSbo1MYJsysnRsNzc%2Byk6bYr4pn3U4gwOYIbg"));
+                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBCTxA6B%2BmUXEp7sFGDAH12acqo3xYh1b%2FFXiuPecnNrb3VAGbw3CaL%2BZvAnMvp"));
                 startActivity(email);
             } catch (Exception e) {
                 e.printStackTrace();
