@@ -1,13 +1,13 @@
-package com.newliferadio.ui;
+package com.newliferadio.ui
 
-import android.os.Bundle;
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
-import androidx.appcompat.app.AppCompatActivity;
+class NotificationActivity : AppCompatActivity() {
 
-public class NotificationActivity extends AppCompatActivity {
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        finish();
+        finish()
     }
 }

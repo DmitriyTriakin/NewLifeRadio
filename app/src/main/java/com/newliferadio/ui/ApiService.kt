@@ -1,20 +1,19 @@
-package com.newliferadio.ui;
+package com.newliferadio.ui
 
-import retrofit2.Retrofit;
+import retrofit2.Retrofit
 
-public class ApiService {
+class ApiService {
 
-    private Retrofit retrofit;
-    private final String API_URL = "http://nlradio.stream/";
+    companion object {
 
-    public ApiService() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(API_URL)
-                .build();
+        const val API_URL = "http://nlradio.stream/"
     }
 
-    public Service getService() {
-        return retrofit.create(Service.class);
-    }
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(API_URL)
+        .build()
+
+    val service: Service
+        get() = retrofit.create(Service::class.java)
 
 }

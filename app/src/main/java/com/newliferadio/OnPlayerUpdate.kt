@@ -1,11 +1,8 @@
-package com.newliferadio;
+package com.newliferadio
 
-public interface OnPlayerUpdate {
-    void onPlayService();
-
-    void onTitleService(String content);
-
-    void onStopService();
-
-    void onErrorService(String error);
+interface OnPlayerUpdate {
+    fun onPlayService()
+    fun onTitleService(content: String?)
+    fun onStopService()
+    fun onErrorService(error: String?)
 }

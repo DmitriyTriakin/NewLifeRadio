@@ -1,5 +1,5 @@
-package com.newliferadio;
+package com.newliferadio
 
-public enum PlayerStatus {
+enum class PlayerStatus {
     LOADING, CALL, PLAY, STOP, NONE
 }
