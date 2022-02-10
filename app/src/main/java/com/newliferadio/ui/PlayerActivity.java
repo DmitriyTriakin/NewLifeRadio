@@ -91,6 +91,24 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
             startActivity(intent);
             overridePendingTransition(R.anim.fade_out, R.anim.hold);
         });
+        findViewById(R.id.share).setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Радио Новая Жизнь");
+            intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.newliferadio");
+            intent.setType("text/plain");
+            startActivity(intent);
+//            startActivity(Intent.createChooser(intent, "Share using"));
+        });
+        findViewById(R.id.youtube).setOnClickListener(v -> {
+            try {
+                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtube.com/channel/UCS3i9Ua6qop7iwO6WgbZWTQ"));
+                startActivity(email);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(PlayerActivity.this, "Приложение YouTube не установлено!", Toast.LENGTH_SHORT).show();
+            }
+        });
         findViewById(R.id.viber).setOnClickListener(v -> {
             try {
                 Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBCTxA6B%2BmUXEp7sFGDAH12acqo3xYh1b%2FFXiuPecnNrb3VAGbw3CaL%2BZvAnMvp"));
@@ -130,6 +148,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_READ_STATE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (mPlayerService != null) {

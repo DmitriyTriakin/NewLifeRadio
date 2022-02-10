@@ -26,19 +26,20 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/web"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_header" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:paddingStart="8dp"
                 android:text="Радио новая жизнь"
                 android:textAllCaps="true"
                 android:textColor="#241697"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <TextView
@@ -54,17 +55,14 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/web"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/header"
+        android:id="@+id/share"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="24dp"
-        android:background="@null"
-        android:minHeight="40dp"
-        android:text="Веб-сайт"
-        android:textColor="@color/colorAccent"
-        app:srcCompat="@mipmap/web" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_share" />
 
     <TextView
         android:id="@+id/title"
@@ -117,9 +115,17 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/youtube"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_youtube" />
+
+        <ImageButton
             android:id="@+id/viber"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@mipmap/viber" />
@@ -127,7 +133,7 @@
         <ImageButton
             android:id="@+id/telegram"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@mipmap/tg" />
@@ -135,7 +141,7 @@
         <ImageButton
             android:id="@+id/whatsapp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@mipmap/whatsapp" />
@@ -143,7 +149,7 @@
         <ImageButton
             android:id="@+id/email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@mipmap/mail" />
