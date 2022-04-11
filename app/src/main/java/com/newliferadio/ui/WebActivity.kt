@@ -39,8 +39,8 @@ class WebActivity : AppCompatActivity() {
         webView.loadUrl(PlayerActivity.WEB_LINK)
         mToolbar = findViewById(R.id.toolbar)
         setSupportActionBar(mToolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         mToolbar.setNavigationOnClickListener {
             finish()
             overridePendingTransition(R.anim.hold, R.anim.fade_in)

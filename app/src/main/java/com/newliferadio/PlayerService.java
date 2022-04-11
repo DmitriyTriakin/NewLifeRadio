@@ -14,20 +14,19 @@ import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.newliferadio.ui.ApiService;
@@ -40,12 +39,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PlayerService extends Service implements Player.EventListener {
+public class PlayerService extends Service {
 
     private static final String CMD_NAME = "command";
     private static final String CMD_STOP = "pause";
     private static String SERVICE_CMD = "com.sec.android.app.music.musicservicecommand";
     private final String STREAM_URL = "http://ic2.christiannetcast.com/nlradio";
+    private final String STREAM_URL_LOW = "https://ic2.sslstream.com/nlradio";
+    private final String STREAM_URL_HIGH = "https://nlradio.stream/hifi";
 
     private final int NOTIFY_ID = 256123;
     private NotificationManager mNotificationManager;
@@ -54,7 +55,7 @@ public class PlayerService extends Service implements Player.EventListener {
 
     private Handler uiHandler = new Handler();
 
-    private SimpleExoPlayer exoPlayer;
+    private ExoPlayer exoPlayer;
     private TrackSelector trackSelector;
     private MediaSource mediaSource;
     private ApiService apiService;
@@ -190,21 +191,54 @@ public class PlayerService extends Service implements Player.EventListener {
         }
     }
 
+    private Player.Listener eventListener = new Player.Listener() {
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, final int playbackState) {
+            if (playWhenReady) {
+                playerStatus = PlayerStatus.PLAY;
+                if (mOnPlayerUpdate != null) {
+                    mOnPlayerUpdate.onPlayService();
+                }
+
+                if (playbackState == Player.STATE_READY) {
+                    updateSubtitle();
+                }
+            } else if (mOnPlayerUpdate != null) {
+                mOnPlayerUpdate.onStopService();
+            }
+        }
+
+        @Override
+        public void onPlayerError(@NonNull PlaybackException error) {
+            if (mOnPlayerUpdate != null) {
+                mOnPlayerUpdate.onErrorService(error.getMessage());
+            }
+            stop(false);
+        }
+    };
+
     private void prepareExoPlayerFromURL() {
         if (exoPlayer == null) {
             trackSelector = new DefaultTrackSelector(this);
 
-            exoPlayer = new SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build();
-            exoPlayer.addListener(this);
+            exoPlayer = new ExoPlayer.Builder(this)
+                    .setTrackSelector(trackSelector)
+                    .build();
+            exoPlayer.addListener(eventListener);
 
-            mediaSource = buildMediaSource(Uri.parse(STREAM_URL));
-            exoPlayer.prepare(mediaSource);
+            mediaSource = buildMediaSource(Uri.parse(STREAM_URL_HIGH));
+            exoPlayer.setMediaSource(mediaSource);
+            exoPlayer.prepare();
         }
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, getString(R.string.app_name)));
+        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(
+                this,
+                Util.getUserAgent(this, getString(R.string.app_name)),
+                defaultBandwidthMeter
+        );
         return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
     }
 
@@ -221,67 +255,9 @@ public class PlayerService extends Service implements Player.EventListener {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("В эфире: " + title);
 
-        Notification n = builder.build();
+        Notification notification = builder.build();
 
-        mNotificationManager.notify(NOTIFY_ID, n);
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, final int playbackState) {
-        if (playWhenReady) {
-            playerStatus = PlayerStatus.PLAY;
-            if (mOnPlayerUpdate != null) {
-                mOnPlayerUpdate.onPlayService();
-            }
-
-            if (playbackState == Player.STATE_READY) {
-                updateSubtitle();
-            }
-        } else if (mOnPlayerUpdate != null) {
-            mOnPlayerUpdate.onStopService();
-        }
-    }
-
-    @Override
-    public void onRepeatModeChanged(int repeatMode) {
-
-    }
-
-    @Override
-    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-    }
-
-    @Override
-    public void onPlayerError(PlaybackException error) {
-        if (mOnPlayerUpdate != null) {
-            mOnPlayerUpdate.onErrorService(error.getMessage());
-        }
-        stop(false);
-    }
-
-    @Override
-    public void onPositionDiscontinuity(int reason) {
-
-    }
-
-    @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
-
-    @Override
-    public void onSeekProcessed() {
-
+        mNotificationManager.notify(NOTIFY_ID, notification);
     }
 
     private Runnable mRunnable = this::updateSubtitle;
