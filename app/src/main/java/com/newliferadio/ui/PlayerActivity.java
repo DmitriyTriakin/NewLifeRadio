@@ -86,59 +86,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         btnStop = findViewById(R.id.stop);
         metaTitle = findViewById(R.id.title);
 
-        findViewById(R.id.web).setOnClickListener(v -> {
-            Intent intent = new Intent(PlayerActivity.this, WebActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_out, R.anim.hold);
-        });
-        findViewById(R.id.share).setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Радио Новая Жизнь");
-            intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.newliferadio");
-            intent.setType("text/plain");
-            startActivity(intent);
-//            startActivity(Intent.createChooser(intent, "Share using"));
-        });
-        findViewById(R.id.youtube).setOnClickListener(v -> {
-            try {
-                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtube.com/channel/UCS3i9Ua6qop7iwO6WgbZWTQ"));
-                startActivity(email);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(PlayerActivity.this, "Приложение YouTube не установлено!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        findViewById(R.id.viber).setOnClickListener(v -> {
-            try {
-                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBCTxA6B%2BmUXEp7sFGDAH12acqo3xYh1b%2FFXiuPecnNrb3VAGbw3CaL%2BZvAnMvp"));
-                startActivity(email);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(PlayerActivity.this, "Приложение Viber не установлено!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        findViewById(R.id.telegram).setOnClickListener(v -> {
-            Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/joinchat/JmXPcVayF2lJce00SNP9qg"));
-            startActivity(email);
-        });
-        findViewById(R.id.whatsapp).setOnClickListener(v -> {
-            try {
-                PackageManager pm = getPackageManager();
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://api.whatsapp.com/send?phone=+79112413777"));
-                startActivity(i);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(PlayerActivity.this, "Приложение WhatsApp не установлено!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        findViewById(R.id.email).setOnClickListener(v -> {
-            Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + MAIL));
-            startActivity(email);
-        });
+        initSocialBtn();
 
         btnPlay.setOnClickListener(v -> start());
         btnStop.setOnClickListener(v -> stop());
@@ -234,6 +182,62 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 })
                 .setNegativeButton("Закрыть", (dialog, id) -> dialog.cancel())
                 .show();
+    }
+
+    private void initSocialBtn() {
+        findViewById(R.id.web).setOnClickListener(v -> {
+            Intent intent = new Intent(PlayerActivity.this, WebActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_out, R.anim.hold);
+        });
+        findViewById(R.id.share).setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Радио Новая Жизнь");
+            intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.newliferadio");
+            intent.setType("text/plain");
+            startActivity(intent);
+//            startActivity(Intent.createChooser(intent, "Share using"));
+        });
+        findViewById(R.id.youtube).setOnClickListener(v -> {
+            try {
+                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtube.com/channel/UCS3i9Ua6qop7iwO6WgbZWTQ"));
+                startActivity(email);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(PlayerActivity.this, "Приложение YouTube не установлено!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.viber).setOnClickListener(v -> {
+            try {
+                Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBCTxA6B%2BmUXEp7sFGDAH12acqo3xYh1b%2FFXiuPecnNrb3VAGbw3CaL%2BZvAnMvp"));
+                startActivity(email);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(PlayerActivity.this, "Приложение Viber не установлено!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.telegram).setOnClickListener(v -> {
+            Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/joinchat/JmXPcVayF2lJce00SNP9qg"));
+            startActivity(email);
+        });
+        findViewById(R.id.whatsapp).setOnClickListener(v -> {
+            try {
+                PackageManager pm = getPackageManager();
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://api.whatsapp.com/send?phone=+79112413777"));
+                startActivity(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(PlayerActivity.this, "Приложение WhatsApp не установлено!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.email).setOnClickListener(v -> {
+            Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + MAIL));
+            startActivity(email);
+        });
     }
 
 }
