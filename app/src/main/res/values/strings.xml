@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Новая Жизнь</string>
+    <string name="radio_new_life">Радио новая жизнь</string>
+    <string name="radio_for_everyone">Радио для всех</string>
+    <string name="back_pressed_text">Нажмите еще раз для выхода!</string>
+    <string name="loading_text">…</string>
+    <string name="error">Ошибка</string>
+    <string name="settings">Настройки</string>
+    <string name="close">Закрыть</string>
 </resources>

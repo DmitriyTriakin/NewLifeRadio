@@ -110,7 +110,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Нажмите еще раз для выхода!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.back_pressed_text, Toast.LENGTH_SHORT).show();
             back_pressed = System.currentTimeMillis();
         }
     }
@@ -128,7 +128,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     @UiThread
     private void start() {
         if (mPlayerService != null) {
-            metaTitle.setText("...");
+            metaTitle.setText(R.string.loading_text);
             mPlayerService.startForeground();
             mPlayerService.start();
         }
@@ -161,15 +161,15 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     public void onErrorService(String error) {
         btnPlay.setChecked(false);
         new AlertDialog.Builder(PlayerActivity.this)
-                .setTitle("Ошибка")
+                .setTitle(R.string.error)
                 .setMessage(error)
-                .setPositiveButton("Настройки", (dialog, id) -> {
+                .setPositiveButton(R.string.settings, (dialog, id) -> {
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setAction(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
                     startActivity(intent);
                 })
-                .setNegativeButton("Закрыть", (dialog, id) -> dialog.cancel())
+                .setNegativeButton(R.string.close, (dialog, id) -> dialog.cancel())
                 .show();
     }
 
@@ -182,7 +182,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         findViewById(R.id.share).setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Радио Новая Жизнь");
+            intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.radio_new_life));
             intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.newliferadio");
             intent.setType("text/plain");
             startActivity(intent);
