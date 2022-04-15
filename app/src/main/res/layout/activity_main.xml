@@ -31,7 +31,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_header" />
+                android:src="@drawable/ic_header" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/flBtnContainer"
+        android:layout_above="@+id/btnPlay"
         android:layout_below="@+id/header"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -79,35 +79,15 @@
         android:textColor="@color/colorAccent"
         android:textSize="16sp" />
 
-    <FrameLayout
-        android:id="@+id/flBtnContainer"
+    <androidx.appcompat.widget.AppCompatToggleButton
+        android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/speakers" />
-
-        <ImageButton
-            android:id="@+id/stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@null"
-            android:src="@drawable/toggle_on_button_selector" />
-
-        <ImageButton
-            android:id="@+id/play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@null"
-            android:src="@drawable/toggle_off_button_selector" />
-
-    </FrameLayout>
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_play"
+        android:textOff=""
+        android:textOn="" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -239,7 +240,7 @@ public class PlayerService extends Service {
                 Util.getUserAgent(this, getString(R.string.app_name)),
                 defaultBandwidthMeter
         );
-        return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+        return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(uri));
     }
 
     private void notification(String title) {

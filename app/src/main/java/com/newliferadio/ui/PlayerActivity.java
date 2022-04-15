@@ -14,9 +14,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -33,17 +33,15 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
 
     private static final int PERMISSION_READ_STATE = 89;
     public final static String WEB_LINK = "http://nlradio.net";
-    private final String PHONE_NUMBER = "+79112413777";
     private final String MAIL = "nlrnetwork@gmail.com";
 
-    private ImageButton btnPlay;
-    private ImageButton btnStop;
+    private ToggleButton btnPlay;
     private TextView metaTitle;
 
     private long back_pressed;
     private PlayerService mPlayerService;
 
-    private ServiceConnection myConnection = new ServiceConnection() {
+    private ServiceConnection serviceConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
             PlayerBinder binder = (PlayerBinder) service;
@@ -82,16 +80,17 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         registerReceiver(mNoisyReceiver, filter);
 
-        btnPlay = findViewById(R.id.play);
-        btnStop = findViewById(R.id.stop);
+        btnPlay = findViewById(R.id.btnPlay);
         metaTitle = findViewById(R.id.title);
 
         initSocialBtn();
 
-        btnPlay.setOnClickListener(v -> start());
-        btnStop.setOnClickListener(v -> stop());
+        btnPlay.setOnCheckedChangeListener((v, isChecked) -> {
+            if (isChecked) start();
+            else stop();
+        });
 
-        bindService(new Intent(this, PlayerService.class), myConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, PlayerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -122,7 +121,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         if (mPlayerService != null) {
             mPlayerService.stopForeground();
         }
-        unbindService(myConnection);
+        unbindService(serviceConnection);
         unregisterReceiver(mNoisyReceiver);
     }
 
@@ -130,7 +129,6 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     private void start() {
         if (mPlayerService != null) {
             metaTitle.setText("...");
-            btnPlay.setEnabled(false);
             mPlayerService.startForeground();
             mPlayerService.start();
         }
@@ -139,7 +137,6 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     @UiThread
     private void stop() {
         if (mPlayerService != null) {
-            btnStop.setEnabled(false);
             metaTitle.setText(null);
             mPlayerService.stop(false);
         }
@@ -147,10 +144,6 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
 
     @Override
     public void onPlayService() {
-        btnPlay.setEnabled(false);
-        btnStop.setEnabled(true);
-        btnPlay.setVisibility(View.INVISIBLE);
-        btnStop.setVisibility(View.VISIBLE);
         metaTitle.setVisibility(View.VISIBLE);
     }
 
@@ -161,16 +154,12 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
 
     @Override
     public void onStopService() {
-        btnPlay.setEnabled(true);
-        btnStop.setEnabled(false);
-        btnPlay.setVisibility(View.VISIBLE);
-        btnStop.setVisibility(View.INVISIBLE);
         metaTitle.setVisibility(View.GONE);
     }
 
     @Override
     public void onErrorService(String error) {
-        btnPlay.setEnabled(true);
+        btnPlay.setChecked(false);
         new AlertDialog.Builder(PlayerActivity.this)
                 .setTitle("Ошибка")
                 .setMessage(error)
