@@ -7,4 +7,8 @@
     <string name="error">Ошибка</string>
     <string name="settings">Настройки</string>
     <string name="close">Закрыть</string>
+    <string name="app_not_instaled">Приложение %1$s не установлено!</string>
+    <string name="notification">Уведомления</string>
+    <string name="faith_hope_love">Вера, надежда, любовь</string>
+    <string name="on_air">В эфире: %1$s</string>
 </resources>

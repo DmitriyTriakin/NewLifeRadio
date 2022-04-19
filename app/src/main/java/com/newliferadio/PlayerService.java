@@ -89,29 +89,25 @@ public class PlayerService extends Service {
         mOnPlayerUpdate = onPlayerUpdate;
     }
 
-    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-
-        @Override
-        public void onAudioFocusChange(int focusChange) {
-            switch (focusChange) {
-                case AudioManager.AUDIOFOCUS_GAIN:
-                    if (!isRadioPlaying() && isPlayerStarted && playerStatus != PlayerStatus.CALL) {
-                        start();
-                    }
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS:
-                    if (isRadioPlaying()) {
-                        stop(false);
-                    }
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
-                    if (isRadioPlaying()) {
-                        stop(true);
-                    }
-                    break;
-                default:
-            }
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = focusChange -> {
+        switch (focusChange) {
+            case AudioManager.AUDIOFOCUS_GAIN:
+                if (!isRadioPlaying() && isPlayerStarted && playerStatus != PlayerStatus.CALL) {
+                    start();
+                }
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS:
+                if (isRadioPlaying()) {
+                    stop(false);
+                }
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+            case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
+                if (isRadioPlaying()) {
+                    stop(true);
+                }
+                break;
+            default:
         }
     };
     private boolean mAudioFocusGranted = false;
@@ -124,7 +120,7 @@ public class PlayerService extends Service {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelId = "notification";
-            CharSequence channelName = "Уведомления";
+            CharSequence channelName = getString(R.string.notification);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
             notificationChannel.setShowBadge(false);
@@ -148,11 +144,11 @@ public class PlayerService extends Service {
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText("Вера, надежда, любовь");
+                .setContentText(getString(R.string.faith_hope_love));
 
-        Notification n = builder.build();
+        Notification notification = builder.build();
 
-        startForeground(NOTIFY_ID, n);
+        startForeground(NOTIFY_ID, notification);
     }
 
     public void stopForeground() {
@@ -254,7 +250,7 @@ public class PlayerService extends Service {
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText("В эфире: " + title);
+                .setContentText(getString(R.string.on_air, title));
 
         Notification notification = builder.build();
 

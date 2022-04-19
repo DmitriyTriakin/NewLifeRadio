@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Нове Життя</string>
+    <string name="radio_new_life">Радіо нове життя</string>
+    <string name="radio_for_everyone">Радіо для всіх</string>
+    <string name="back_pressed_text">Натисніть ще раз, щоб вийти!</string>
+    <string name="loading_text">…</string>
+    <string name="error">Помилка</string>
+    <string name="settings">Налаштування</string>
+    <string name="close">Закрити</string>
+    <string name="app_not_instaled">Програма %1$s не встановлена!</string>
+    <string name="notification">Сповіщення</string>
+    <string name="faith_hope_love">Віра, надія, любов</string>
+    <string name="on_air">В ефірі: %1$s</string>
+</resources>

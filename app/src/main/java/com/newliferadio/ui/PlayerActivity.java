@@ -110,7 +110,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, R.string.back_pressed_text, Toast.LENGTH_SHORT).show();
+            showToast(getString(R.string.back_pressed_text));
             back_pressed = System.currentTimeMillis();
         }
     }
@@ -194,7 +194,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 startActivity(email);
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(PlayerActivity.this, "Приложение YouTube не установлено!", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.app_not_instaled, "YouTube"));
             }
         });
         findViewById(R.id.viber).setOnClickListener(v -> {
@@ -203,7 +203,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 startActivity(email);
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(PlayerActivity.this, "Приложение Viber не установлено!", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.app_not_instaled, "Viber"));
             }
         });
         findViewById(R.id.telegram).setOnClickListener(v -> {
@@ -219,7 +219,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 startActivity(i);
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(PlayerActivity.this, "Приложение WhatsApp не установлено!", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.app_not_instaled, "WhatsApp"));
             }
         });
 
@@ -227,6 +227,10 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
             Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + MAIL));
             startActivity(email);
         });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }
