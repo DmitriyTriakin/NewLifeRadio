@@ -2,17 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_sky">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_sky" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/web"
+        android:id="@+id/ivWeb"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
@@ -32,8 +26,8 @@
         android:textAllCaps="true"
         android:textColor="@color/colorTitle"
         android:textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@id/share"
-        app:layout_constraintStart_toEndOf="@+id/web"
+        app:layout_constraintEnd_toStartOf="@id/ivShare"
+        app:layout_constraintStart_toEndOf="@+id/ivWeb"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -51,18 +45,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tvRadioNewLife" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/share"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/ivShare"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentEnd="true"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_share" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tvMeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -94,7 +88,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/youtube"
+            android:id="@+id/ivYoutube"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -102,7 +96,7 @@
             app:srcCompat="@drawable/ic_youtube" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/viber"
+            android:id="@+id/ivViber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -110,7 +104,7 @@
             app:srcCompat="@drawable/ic_viber" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/telegram"
+            android:id="@+id/ivTelegram"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -118,7 +112,7 @@
             app:srcCompat="@drawable/ic_telegram" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/whatsapp"
+            android:id="@+id/ivWhatsapp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -126,7 +120,7 @@
             app:srcCompat="@drawable/ic_whatsapp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/email"
+            android:id="@+id/ivEmail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

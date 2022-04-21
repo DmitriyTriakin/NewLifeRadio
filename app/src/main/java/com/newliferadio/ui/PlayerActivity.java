@@ -36,7 +36,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     private final String MAIL = "nlrnetwork@gmail.com";
 
     private ToggleButton btnPlay;
-    private TextView metaTitle;
+    private TextView tvMeta;
 
     private long back_pressed;
     private PlayerService mPlayerService;
@@ -56,7 +56,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
 
             if (mPlayerService != null && mPlayerService.isRadioPlaying()) {
                 onPlayService();
-                metaTitle.setText(mPlayerService.getTitleInApp());
+                tvMeta.setText(mPlayerService.getTitleInApp());
             }
         }
 
@@ -81,7 +81,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         registerReceiver(mNoisyReceiver, filter);
 
         btnPlay = findViewById(R.id.btnPlay);
-        metaTitle = findViewById(R.id.title);
+        tvMeta = findViewById(R.id.tvMeta);
 
         initSocialBtn();
 
@@ -128,7 +128,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     @UiThread
     private void start() {
         if (mPlayerService != null) {
-            metaTitle.setText(R.string.loading_text);
+            tvMeta.setText(R.string.loading_text);
             mPlayerService.startForeground();
             mPlayerService.start();
         }
@@ -137,24 +137,24 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     @UiThread
     private void stop() {
         if (mPlayerService != null) {
-            metaTitle.setText(null);
+            tvMeta.setText(null);
             mPlayerService.stop(false);
         }
     }
 
     @Override
     public void onPlayService() {
-        metaTitle.setVisibility(View.VISIBLE);
+        tvMeta.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTitleService(String title) {
-        metaTitle.setText(title);
+        tvMeta.setText(title);
     }
 
     @Override
     public void onStopService() {
-        metaTitle.setVisibility(View.GONE);
+        tvMeta.setVisibility(View.GONE);
     }
 
     @Override
@@ -174,12 +174,12 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     }
 
     private void initSocialBtn() {
-        findViewById(R.id.web).setOnClickListener(v -> {
+        findViewById(R.id.ivWeb).setOnClickListener(v -> {
             Intent intent = new Intent(PlayerActivity.this, WebActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_out, R.anim.hold);
         });
-        findViewById(R.id.share).setOnClickListener(v -> {
+        findViewById(R.id.ivShare).setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.radio_new_life));
@@ -188,7 +188,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
             startActivity(intent);
 //            startActivity(Intent.createChooser(intent, "Share using"));
         });
-        findViewById(R.id.youtube).setOnClickListener(v -> {
+        findViewById(R.id.ivYoutube).setOnClickListener(v -> {
             try {
                 Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtube.com/channel/UCS3i9Ua6qop7iwO6WgbZWTQ"));
                 startActivity(email);
@@ -197,7 +197,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 showToast(getString(R.string.app_not_instaled, "YouTube"));
             }
         });
-        findViewById(R.id.viber).setOnClickListener(v -> {
+        findViewById(R.id.ivViber).setOnClickListener(v -> {
             try {
                 Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://invite.viber.com/?g2=AQBCTxA6B%2BmUXEp7sFGDAH12acqo3xYh1b%2FFXiuPecnNrb3VAGbw3CaL%2BZvAnMvp"));
                 startActivity(email);
@@ -206,11 +206,11 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 showToast(getString(R.string.app_not_instaled, "Viber"));
             }
         });
-        findViewById(R.id.telegram).setOnClickListener(v -> {
+        findViewById(R.id.ivTelegram).setOnClickListener(v -> {
             Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/joinchat/JmXPcVayF2lJce00SNP9qg"));
             startActivity(email);
         });
-        findViewById(R.id.whatsapp).setOnClickListener(v -> {
+        findViewById(R.id.ivWhatsapp).setOnClickListener(v -> {
             try {
                 PackageManager pm = getPackageManager();
                 pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
@@ -223,7 +223,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
             }
         });
 
-        findViewById(R.id.email).setOnClickListener(v -> {
+        findViewById(R.id.ivEmail).setOnClickListener(v -> {
             Intent email = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + MAIL));
             startActivity(email);
         });
