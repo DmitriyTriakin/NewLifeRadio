@@ -183,10 +183,9 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.radio_new_life));
-            intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.newliferadio");
+            intent.putExtra(Intent.EXTRA_TEXT, "https://nlradio.net/skachat-prilozhenie/");
             intent.setType("text/plain");
             startActivity(intent);
-//            startActivity(Intent.createChooser(intent, "Share using"));
         });
         findViewById(R.id.ivYoutube).setOnClickListener(v -> {
             try {

@@ -46,7 +46,7 @@ public class PlayerService extends Service {
     private static final String CMD_STOP = "pause";
     private static String SERVICE_CMD = "com.sec.android.app.music.musicservicecommand";
     private final String STREAM_URL = "http://ic2.christiannetcast.com/nlradio";
-    private final String STREAM_URL_LOW = "https://ic2.sslstream.com/nlradio";
+//    private final String STREAM_URL_LOW = "https://ic2.sslstream.com/nlradio";
     private final String STREAM_URL_HIGH = "https://nlradio.stream/hifi";
 
     private final int NOTIFY_ID = 256123;
@@ -223,7 +223,7 @@ public class PlayerService extends Service {
                     .build();
             exoPlayer.addListener(eventListener);
 
-            mediaSource = buildMediaSource(Uri.parse(STREAM_URL_HIGH));
+            mediaSource = buildMediaSource(Uri.parse(STREAM_URL));
             exoPlayer.setMediaSource(mediaSource);
             exoPlayer.prepare();
         }
