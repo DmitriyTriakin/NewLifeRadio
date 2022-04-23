@@ -1,7 +1,6 @@
 package com.newliferadio.ui;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -182,6 +181,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
     @Override
     public void onErrorService(String error) {
         btnPlay.setChecked(false);
+        /**
         new AlertDialog.Builder(PlayerActivity.this)
                 .setTitle(R.string.error)
                 .setMessage(error)
@@ -193,6 +193,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 })
                 .setNegativeButton(R.string.close, (dialog, id) -> dialog.cancel())
                 .show();
+         */
     }
 
     private void initSocialBtn() {
