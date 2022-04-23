@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Новая Жизнь</string>
     <string name="radio_new_life">Радио новая жизнь</string>
-    <string name="radio_for_everyone">Христианское радио</string>
+    <string name="christian_radio">Христианское радио</string>
     <string name="write_to_air">Написать в эфир</string>
     <string name="back_pressed_text">Нажмите еще раз для выхода!</string>
     <string name="loading_text">…</string>
