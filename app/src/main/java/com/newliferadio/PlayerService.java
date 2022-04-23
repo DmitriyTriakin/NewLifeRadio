@@ -48,6 +48,7 @@ public class PlayerService extends Service {
     private final String STREAM_URL = "http://ic2.christiannetcast.com/nlradio";
 //    private final String STREAM_URL_LOW = "https://ic2.sslstream.com/nlradio";
     private final String STREAM_URL_HIGH = "https://nlradio.stream/hifi";
+    private String uriString = STREAM_URL;
 
     private final int NOTIFY_ID = 256123;
     private NotificationManager mNotificationManager;
@@ -214,6 +215,16 @@ public class PlayerService extends Service {
         }
     };
 
+    public void setGoodQuality() {
+        uriString = STREAM_URL;
+        start();
+    }
+
+    public void setHighQuality() {
+        uriString = STREAM_URL_HIGH;
+        start();
+    }
+
     private void prepareExoPlayerFromURL() {
         if (exoPlayer == null) {
             trackSelector = new DefaultTrackSelector(this);
@@ -223,7 +234,7 @@ public class PlayerService extends Service {
                     .build();
             exoPlayer.addListener(eventListener);
 
-            mediaSource = buildMediaSource(Uri.parse(STREAM_URL));
+            mediaSource = buildMediaSource(Uri.parse(uriString));
             exoPlayer.setMediaSource(mediaSource);
             exoPlayer.prepare();
         }

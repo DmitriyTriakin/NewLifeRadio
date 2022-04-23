@@ -48,8 +48,15 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
             mPlayerService = binder.getService();
             mPlayerService.setOnPlayerUpdate(PlayerActivity.this);
 
-            if (ContextCompat.checkSelfPermission(PlayerActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(PlayerActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSION_READ_STATE);
+            if (ContextCompat.checkSelfPermission(
+                    PlayerActivity.this,
+                    Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                        PlayerActivity.this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        PERMISSION_READ_STATE
+                );
             } else if (mPlayerService != null) {
                 mPlayerService.attachPhoneListener();
             }
@@ -84,6 +91,13 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
         tvMeta = findViewById(R.id.tvMeta);
 
         initSocialBtn();
+
+        findViewById(R.id.btnGoodQuality).setOnClickListener(v -> {
+            if (mPlayerService != null) mPlayerService.setGoodQuality();
+        });
+        findViewById(R.id.btnHighQuality).setOnClickListener(v -> {
+            if (mPlayerService != null) mPlayerService.setHighQuality();
+        });
 
         btnPlay.setOnCheckedChangeListener((v, isChecked) -> {
             if (isChecked) start();

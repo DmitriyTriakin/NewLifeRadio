@@ -13,4 +13,6 @@
     <string name="notification">Сповіщення</string>
     <string name="faith_hope_love">Віра, надія, любов</string>
     <string name="on_air">В ефірі: %1$s</string>
+    <string name="good_quality">Гарна якість</string>
+    <string name="high_quality">Висока якість</string>
 </resources>

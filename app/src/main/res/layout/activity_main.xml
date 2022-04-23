@@ -56,8 +56,8 @@
 
     <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/btnPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="184dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:background="@drawable/bg_play"
@@ -80,14 +80,35 @@
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
 
+    <Button
+        android:id="@+id/btnGoodQuality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_btn"
+        android:text="@string/good_quality"
+        app:layout_constraintBottom_toTopOf="@+id/tbBottom"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnHighQuality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_btn"
+        android:text="@string/high_quality"
+        app:layout_constraintBottom_toTopOf="@+id/tbBottom"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
+        android:id="@+id/tbBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/write_to_air"
         android:textAllCaps="true"
-        android:textSize="18sp"
         android:textColor="@color/colorTitle"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/llBottom"
         app:layout_constraintEnd_toEndOf="parent"
