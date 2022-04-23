@@ -237,7 +237,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
                 PackageManager pm = getPackageManager();
                 pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://api.whatsapp.com/send?phone=+79112413777"));
+                i.setData(Uri.parse("https://chat.whatsapp.com/EZQvHbhbIMtD0R2rfCaqXH"));
                 startActivity(i);
             } catch (Exception e) {
                 e.printStackTrace();
