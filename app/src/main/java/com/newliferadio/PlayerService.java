@@ -217,12 +217,12 @@ public class PlayerService extends Service {
 
     public void setGoodQuality() {
         uriString = STREAM_URL;
-        start();
+        prepareExoPlayerFromURL();
     }
 
     public void setHighQuality() {
         uriString = STREAM_URL_HIGH;
-        start();
+        prepareExoPlayerFromURL();
     }
 
     private void prepareExoPlayerFromURL() {

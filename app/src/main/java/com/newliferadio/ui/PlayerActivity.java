@@ -92,11 +92,19 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayerUpdate 
 
         initSocialBtn();
 
-        findViewById(R.id.btnGoodQuality).setOnClickListener(v -> {
+        ToggleButton btnGoodQuality = findViewById(R.id.btnGoodQuality);
+        ToggleButton btnHighQuality = findViewById(R.id.btnHighQuality);
+        btnGoodQuality.setOnClickListener(v -> {
             if (mPlayerService != null) mPlayerService.setGoodQuality();
+            btnHighQuality.setChecked(false);
+            btnHighQuality.setEnabled(true);
+            btnGoodQuality.setEnabled(false);
         });
-        findViewById(R.id.btnHighQuality).setOnClickListener(v -> {
+        btnHighQuality.setOnClickListener(v -> {
             if (mPlayerService != null) mPlayerService.setHighQuality();
+            btnGoodQuality.setChecked(false);
+            btnGoodQuality.setEnabled(true);
+            btnHighQuality.setEnabled(false);
         });
 
         btnPlay.setOnCheckedChangeListener((v, isChecked) -> {

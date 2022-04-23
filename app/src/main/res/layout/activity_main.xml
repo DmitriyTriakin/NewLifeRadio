@@ -77,28 +77,42 @@
         android:layout_marginEnd="24dp"
         android:gravity="center"
         android:textColor="@color/colorTitle"
-        android:textSize="20sp"
+        android:textSize="22sp"
         app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/btnGoodQuality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_btn"
-        android:text="@string/good_quality"
+        android:checked="true"
+        android:enabled="false"
+        android:textColor="@color/colorTitle"
+        android:textOff="@string/good_quality"
+        android:textOn="@string/good_quality"
         app:layout_constraintBottom_toTopOf="@+id/tbBottom"
+        app:layout_constraintEnd_toStartOf="@+id/btnHighQuality"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/btnHighQuality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_btn"
-        android:text="@string/high_quality"
+        android:textColor="@color/colorTitle"
+        android:textOff="@string/high_quality"
+        android:textOn="@string/high_quality"
         app:layout_constraintBottom_toTopOf="@+id/tbBottom"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnGoodQuality" />
 
     <TextView
         android:id="@+id/tbBottom"
